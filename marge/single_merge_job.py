@@ -73,9 +73,8 @@ class SingleMergeJob(MergeJob):
 
             self.maybe_reapprove(merge_request, approvals)
 
-            if target_project.only_allow_merge_if_pipeline_succeeds:
-                self.wait_for_ci_to_pass(merge_request, actual_sha)
-                time.sleep(2)
+            self.wait_for_ci_to_pass(merge_request, actual_sha)
+            time.sleep(2)
 
             self.ensure_mergeable_mr(merge_request)
 
