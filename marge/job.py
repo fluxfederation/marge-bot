@@ -408,6 +408,7 @@ JOB_OPTIONS = [
     'embargo',
     'ci_timeout',
     'fusion',
+    'use_no_ff_batches',
 ]
 
 
