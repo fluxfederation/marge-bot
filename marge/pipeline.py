@@ -15,8 +15,7 @@ class Pipeline(gitlab.Resource):
             ref=None,
             status=None,
             order_by='id',
-            sort='desc',
-    ):
+            sort='desc'):
         params = {
             'ref': branch if ref is None else ref,
             'order_by': order_by,

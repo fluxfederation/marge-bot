@@ -6,7 +6,7 @@ try:
 except Exception as e:
     print('Exception occured')
     if hasattr(e, 'stdout'):
-        print(f'stdout was: {e.stdout}')
+        print('stdout was: {0.stdout}'.format(e))
     if hasattr(e, 'stderr'):
-        print(f'stderr was: {e.stderr}')
+        print('stderr was: {0.stderr}'.format(e))
     raise
