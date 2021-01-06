@@ -14,10 +14,8 @@ class Approvals(gitlab.Resource):
             # GitLab botched the v4 api before 9.2.3
             approver_url = '/projects/{0.project_id}/merge_requests/{0.id}/approvals'.format(self)
 
-        if gitlab_version.is_ee:
-            self._info = self._api.call(GET(approver_url))
-        else:
-            self._info = dict(self._info, approvals_left=0, approved_by=[])
+        # Always treat as if EE
+        self._info = self._api.call(GET(approver_url))
 
     @property
     def iid(self):
@@ -45,11 +43,8 @@ class Approvals(gitlab.Resource):
         return [who['user']['id'] for who in self.info['approved_by']]
 
     def reapprove(self):
-        """Impersonates the approvers and re-approves the merge_request as them.
-
-        The idea is that we want to get the approvers, push the rebased branch
-        (which may invalidate approvals, depending on GitLab settings) and then
-        restore the approval status.
+        """Old behaviour was to impersonates the approvers and re-approves the merge_request as them.
+        We now reapprove as margebot as we do not have root on GitLab.com
         """
         self.approve(self)
 
@@ -61,5 +56,5 @@ class Approvals(gitlab.Resource):
             # GitLab botched the v4 api before 9.2.3
             approve_url = '/projects/{0.project_id}/merge_requests/{0.id}/approve'.format(obj)
 
-        for uid in self.approver_ids:
-            self._api.call(POST(approve_url), sudo=uid)
+        # Reapprove MR as margebot
+        self._api.call(POST(approve_url))

@@ -23,9 +23,6 @@ class Bot:
         opts = config.merge_opts
 
         if not user.is_admin:
-            assert not opts.reapprove, (
-                "{0.username} is not an admin, can't impersonate!".format(user)
-            )
             assert not opts.add_reviewers, (
                 "{0.username} is not an admin, can't lookup Reviewed-by: email addresses ".format(user)
             )
